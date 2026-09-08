@@ -14,7 +14,7 @@ public class Main {
         window.add(gamePanel);
         window.pack(); // Causes this window to be sized to fit the preffered size and layouts of its subcomponents (=GamePanel)
 
-        window.setLocationRelativeTo(null); //Not specify the loaction of the window = the window will be displayed at the center of the screen
+        window.setLocationRelativeTo(null); //Not specify the location of the window = the window will be displayed at the center of the screen
         window.setVisible(true);
     }
 }
