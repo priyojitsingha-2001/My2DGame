@@ -14,6 +14,8 @@ public class GamePanel extends JPanel implements Runnable{
     final int screenWidth = tileSize * maxScreenColumn; // 768 pixles
     final int screenHeight = tileSize * maxScreenRow; // 576 pixels
 
+//    FPS
+    int FPS = 60;
     KeyHandler keyHandler = new KeyHandler();
 
 //    set player's default position
@@ -40,27 +42,44 @@ public class GamePanel extends JPanel implements Runnable{
     @Override
     public void run() {
 
+        double drawInterval = 1000000000 / FPS;
+        double nextDrawTime = System.nanoTime() + drawInterval; // when internal screenTime hits this time next frame will be drawn
+
         while(gameThread != null){ // gameloop
 //            1. UPDATE: update information such as character positions
             update();
 //            2. DRAW: draw the screen with updated information
             repaint(); // by this we are basically calling the paintComponent
+
+            try {
+                long remainingTime = (long) ((nextDrawTime - System.nanoTime()) / 1_000_000);
+
+                if (remainingTime < 0) {
+                    remainingTime = 0;
+                }
+
+                Thread.sleep(remainingTime);
+
+                nextDrawTime += drawInterval;
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
 
     }
 
     public void update(){
         if(keyHandler.upPressed == true){
-            playerPositionY += playerSpeed;
+            playerPositionY -= playerSpeed;
         }
         else if(keyHandler.downPressed == true){
-            playerPositionY -= playerSpeed;
+            playerPositionY += playerSpeed;
         }
         else if (keyHandler.rightPressed == true) {
             playerPositionX += playerSpeed;
         }
         else if (keyHandler.leftPressed == true) {
-            playerPositionY -= playerSpeed;
+            playerPositionX -= playerSpeed;
         }
     }
 
