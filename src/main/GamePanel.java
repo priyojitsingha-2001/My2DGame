@@ -1,5 +1,7 @@
 package main;
 
+import main.entity.Player;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -17,6 +19,7 @@ public class GamePanel extends JPanel implements Runnable{
 //    FPS
     int FPS = 60;
     KeyHandler keyHandler = new KeyHandler();
+    Player player = new Player(this,keyHandler);
 
 //    set player's default position
     int playerPositionX = 100;
