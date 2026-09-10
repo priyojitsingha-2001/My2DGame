@@ -43,21 +43,42 @@ public class Player extends Entity{
         }
     }
     public void update(){
-        if(keyHandler.upPressed == true){
-            direction = "up";
-            y -= speed;
-        }
-        else if(keyHandler.downPressed == true){
-            direction = "down";
-            y += speed;
-        }
-        else if (keyHandler.rightPressed == true) {
-            direction = "right";
-            x += speed;
-        }
-        else if (keyHandler.leftPressed == true) {
-            direction = "left";
-            x -= speed;
+
+        if(keyHandler.upPressed == true || keyHandler.downPressed == true || keyHandler.rightPressed == true || keyHandler.leftPressed == true){
+            if(keyHandler.upPressed == true){
+                direction = "up";
+                y -= speed;
+            }
+            else if(keyHandler.downPressed == true){
+                direction = "down";
+                y += speed;
+            }
+            else if (keyHandler.rightPressed == true) {
+                direction = "right";
+                x += speed;
+            }
+            else if (keyHandler.leftPressed == true) {
+                direction = "left";
+                x -= speed;
+            }
+
+//        This is the main logic where we are making the sprite animation/ simulating its walk animation
+
+/*        The gave is running at FPS(60).
+          We are trying to render one of the two Sprite images alterbatively on every 12 frames.
+          Hence we are checking with the help of SpriteCounter(which is basically how many framers are being drawn) to count till 12th frame.
+          Once 12 frames are rendered we are changing the SpriteNum 1 if 2 and vice versa. Later we are using this SpriteNum to determine which version of the sprite image to be drawn
+
+          ** we have nested all of this logic inside of a if which checks if either of the key for any of the respective movements are pressed or not, so that our animation/sprite switching happens only when the key press is triggered or player is moving.
+ */
+            SpriteCounter++;
+            if(SpriteCounter > 12){
+                if(SpriteNum == 1)
+                    SpriteNum = 2;
+                else if(SpriteNum == 2)
+                    SpriteNum = 1;
+                SpriteCounter = 0;
+            }
         }
     }
 
@@ -71,16 +92,29 @@ public class Player extends Entity{
         switch (direction){
 //            rendering image based on direction the player is moving
             case "up":
-                image = up1;
+                // for each sprite we are alternatively rendering two versions just to mimic an animation effect
+                if(SpriteNum == 1)
+                    image = up1;
+                if(SpriteNum == 2)
+                    image = up2;
                 break;
             case "down":
-                image = down1;
+                if(SpriteNum == 1)
+                    image = down1;
+                if(SpriteNum == 2)
+                    image = down2;
                 break;
             case "right":
-                image = right1;
+                if(SpriteNum == 1)
+                    image = right1;
+                if(SpriteNum == 2)
+                    image = right2;
                 break;
             case "left":
-                image = left1;
+                if(SpriteNum == 1)
+                    image = left1;
+                if(SpriteNum == 2)
+                    image = left2;
                 break;
         }
         graphics2D.drawImage(image, x, y, gamePanel.tileSize, gamePanel.tileSize, null);
