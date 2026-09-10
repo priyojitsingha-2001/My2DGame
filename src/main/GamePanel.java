@@ -10,7 +10,7 @@ public class GamePanel extends JPanel implements Runnable{
     final int originalTileSize = 16; // default size of any npc, mopb or player size [16*16]
     final int scale = 3;
 
-    final int tileSize = originalTileSize * 3; // 48*48 actual tile size
+    public final int tileSize = originalTileSize * 3; // 48*48 actual tile size
     final int maxScreenColumn = 16;
     final int maxScreenRow = 12;
     final int screenWidth = tileSize * maxScreenColumn; // 768 pixles
@@ -72,26 +72,14 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     public void update(){
-        if(keyHandler.upPressed == true){
-            playerPositionY -= playerSpeed;
-        }
-        else if(keyHandler.downPressed == true){
-            playerPositionY += playerSpeed;
-        }
-        else if (keyHandler.rightPressed == true) {
-            playerPositionX += playerSpeed;
-        }
-        else if (keyHandler.leftPressed == true) {
-            playerPositionX -= playerSpeed;
-        }
+        player.update();
     }
 
     public void paintComponent(Graphics graphics){
         super.paintComponent(graphics);
 
         Graphics2D graphics2D = (Graphics2D) graphics;
-        graphics2D.setColor(Color.white);
-        graphics2D.fillRect(playerPositionX,playerPositionY,tileSize,tileSize);
+        player.draw(graphics2D);
         graphics2D.dispose();
     }
 }
