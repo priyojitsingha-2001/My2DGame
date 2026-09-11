@@ -20,8 +20,8 @@ public class Player extends Entity{
     }
 
     public void setDefaultvalues(){
-        x = 100;
-        y = 100;
+        playerXCoordinate = 100;
+        playerYCoordinate = 100;
         speed = 4;
         direction = "down"; // at the start player will be facing to this direction
     }
@@ -47,19 +47,19 @@ public class Player extends Entity{
         if(keyHandler.upPressed == true || keyHandler.downPressed == true || keyHandler.rightPressed == true || keyHandler.leftPressed == true){
             if(keyHandler.upPressed == true){
                 direction = "up";
-                y -= speed;
+                playerYCoordinate -= speed;
             }
             else if(keyHandler.downPressed == true){
                 direction = "down";
-                y += speed;
+                playerYCoordinate += speed;
             }
             else if (keyHandler.rightPressed == true) {
                 direction = "right";
-                x += speed;
+                playerXCoordinate += speed;
             }
             else if (keyHandler.leftPressed == true) {
                 direction = "left";
-                x -= speed;
+                playerXCoordinate -= speed;
             }
 
 //        This is the main logic where we are making the sprite animation/ simulating its walk animation
@@ -85,7 +85,7 @@ public class Player extends Entity{
     public void draw(Graphics2D graphics2D){
 //        to draw a basic white square
 //        graphics2D.setColor(Color.white);
-//        graphics2D.fillRect(x,y,gamePanel.tileSize,gamePanel.tileSize);
+//        graphics2D.fillRect(x,playerYCoordinate,gamePanel.tileSize,gamePanel.tileSize);
 
 //        Now we are drawing an image
         BufferedImage image = null;
@@ -117,6 +117,6 @@ public class Player extends Entity{
                     image = left2;
                 break;
         }
-        graphics2D.drawImage(image, x, y, gamePanel.tileSize, gamePanel.tileSize, null);
+        graphics2D.drawImage(image, playerXCoordinate, playerYCoordinate, gamePanel.tileSize, gamePanel.tileSize, null);
     }
 }
