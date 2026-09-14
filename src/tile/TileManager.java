@@ -34,6 +34,21 @@ public class TileManager {
     }
 
     public void draw(Graphics2D graphics2D){
-        graphics2D.drawImage(tiles[0].image, 0,0, gamePanel.tileSize, gamePanel.tileSize, null);
+        int col = 0;
+        int row = 0;
+        int x = 0;
+        int y = 0;
+        while(col < gamePanel.maxScreenColumn && row < gamePanel.maxScreenRow){
+            graphics2D.drawImage(tiles[0].image, x, y, gamePanel.tileSize, gamePanel.tileSize, null);
+            col ++;
+            x += gamePanel.tileSize;
+
+            if(col == gamePanel.maxScreenColumn){
+                col = 0;
+                x = 0;
+                row++;
+                y += gamePanel.tileSize;
+            }
+        }
     }
 }
