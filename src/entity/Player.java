@@ -12,23 +12,42 @@ public class Player extends Entity{
     GamePanel gamePanel;
     KeyHandler keyHandler;
 
+    // Screen (viewport) position: fixed pixel where the player is drawn on the window.
+    // Kept centered so the world scrolls around the player (camera-follow effect).
+    // Contrast with playerXCoordinate / playerYCoordinate (inherited from Entity),
+    // which is the player's position in the full world map.
+    public final int screenXCoordinate;
+    public final int screenYCoordinate;
+
     public Player(GamePanel gamePanel, KeyHandler keyHandler){
         this.gamePanel = gamePanel;
         this.keyHandler = keyHandler;
+
+        // Center the player on screen. Subtract half a tile so the
+        // tile-sized sprite itself is centered, not its top-left corner.
+        // These values never change after this (final) - only the world coords move.
+        screenXCoordinate = gamePanel.screenWidth / 2 - (gamePanel.tileSize / 2);
+        screenYCoordinate = gamePanel.screenHeight / 2 - (gamePanel.tileSize / 2);
+
         setDefaultvalues();
         getPLayerImage();
     }
 
+    // Sets the player's spawn state in WORLD coordinates (pixels on the full map,
+    // not pixels on the window). TileManager uses these to offset every tile:
+    // screenX = worldX - playerXCoordinate + screenXCoordinate.
     public void setDefaultvalues(){
-        playerXCoordinate = 100;
-        playerYCoordinate = 100;
-        speed = 4;
+        // Spawn at world tile (col 23, row 21) converted to pixels.
+        playerXCoordinate = gamePanel.tileSize * 23;
+        playerYCoordinate = gamePanel.tileSize * 21;
+        speed = 4; // world pixels moved per update tick
         direction = "down"; // at the start player will be facing to this direction
     }
 
+    // Loads the 8 directional walk sprites (2 frames per direction for animation).
     public void getPLayerImage(){
         try {
-//            loading player images
+//            loading player images from /res/player/
             up1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_up_1.png"));
             up2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_up_2.png"));
             down1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_down_1.png"));
@@ -42,8 +61,12 @@ public class Player extends Entity{
             e.printStackTrace();
         }
     }
+    // Called once per frame. Moves the player in WORLD space and advances walk animation.
+    // Note: screenXCoordinate/screenYCoordinate are untouched here - the player sprite
+    // stays centered on screen while playerXCoordinate/playerYCoordinate moves through the world.
     public void update(){
 
+        // Only move/animate when a movement key is held.
         if(keyHandler.upPressed == true || keyHandler.downPressed == true || keyHandler.rightPressed == true || keyHandler.leftPressed == true){
             if(keyHandler.upPressed == true){
                 direction = "up";
@@ -82,15 +105,12 @@ public class Player extends Entity{
         }
     }
 
+    // Draws the player at its fixed SCREEN position (center of window).
+    // The world (tiles) moves behind it based on playerXCoordinate/playerYCoordinate.
     public void draw(Graphics2D graphics2D){
-//        to draw a basic white square
-//        graphics2D.setColor(Color.white);
-//        graphics2D.fillRect(x,playerYCoordinate,gamePanel.tileSize,gamePanel.tileSize);
-
-//        Now we are drawing an image
         BufferedImage image = null;
         switch (direction){
-//            rendering image based on direction the player is moving
+//            Pick sprite based on facing direction + current walk frame (SpriteNum).
             case "up":
                 // for each sprite we are alternatively rendering two versions just to mimic an animation effect
                 if(SpriteNum == 1)
@@ -117,6 +137,7 @@ public class Player extends Entity{
                     image = left2;
                 break;
         }
-        graphics2D.drawImage(image, playerXCoordinate, playerYCoordinate, gamePanel.tileSize, gamePanel.tileSize, null);
+        // Always drawn at screen center; world position affects tiles, not this call.
+        graphics2D.drawImage(image, screenXCoordinate, screenYCoordinate, gamePanel.tileSize, gamePanel.tileSize, null);
     }
 }
