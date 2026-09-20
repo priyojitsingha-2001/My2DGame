@@ -29,6 +29,13 @@ public class Player extends Entity{
         screenXCoordinate = gamePanel.screenWidth / 2 - (gamePanel.tileSize / 2);
         screenYCoordinate = gamePanel.screenHeight / 2 - (gamePanel.tileSize / 2);
 
+        // initializing the players collision box values
+        solidArea = new Rectangle();
+        solidArea.x = 8;
+        solidArea.y = 16;
+        solidArea.width = 32;
+        solidArea.height = 32;
+
         setDefaultvalues();
         getPLayerImage();
     }

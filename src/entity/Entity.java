@@ -1,5 +1,6 @@
 package entity;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Entity {
@@ -12,4 +13,7 @@ public class Entity {
 
     public int SpriteCounter = 0;
     public int SpriteNum = 1;
+
+    public Rectangle solidArea; // players hit box, there area within the player which is going to interact upon collision
+    public boolean collisionOn = false; // flag to denote if player got hit or not
 }
