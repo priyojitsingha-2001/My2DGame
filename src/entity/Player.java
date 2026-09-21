@@ -92,6 +92,10 @@ public class Player extends Entity{
                 playerXCoordinate -= speed;
             }
 
+//            Initially we mark player's collision flag as false and then we check collision
+            collisionOn = false;
+            gamePanel.collisionChecker.checkTile(this);
+
 //        This is the main logic where we are making the sprite animation/ simulating its walk animation
 
 /*        The gave is running at FPS(60).

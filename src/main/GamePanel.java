@@ -32,6 +32,7 @@ public class GamePanel extends JPanel implements Runnable{
     // TileManager uses both to convert world -> screen: screenX = worldX - playerX + screenCenterX.
     public Player player = new Player(this,keyHandler);
     TileManager tileManager = new TileManager(this);
+    public CollisionChecker collisionChecker = new CollisionChecker(this);
 
     Thread gameThread; // game loop runs on this separate thread
 
